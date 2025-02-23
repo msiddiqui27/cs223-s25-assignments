@@ -1,7 +1,7 @@
 /*----------------------------------------------
- * Author:
- * Date:
- * Description
+ * Author: Maryam
+ * Date: 02/22/2025
+ * Description:  reads in a PPM file and "glitches" it. The program should save the modified PPM in a new file with the suffix "-glitch"
  ---------------------------------------------*/
 #include <stdio.h>
 #include "read_ppm.h"
@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 {
   if (argc < 2)
   {
-    fprintf(stderr, "Error: %s <ppm_filename>\n", argv[0]);
+    fprintf(stderr, "Error: %s <input.ppm>\n", argv[0]);
     return -1;
   }
   int w, h;
@@ -46,15 +46,13 @@ int main(int argc, char *argv[])
   if (dot) *dot = '\0'; 
 
   char new_filename[256];
+
   if (strlen(base_filename) > 245) {  
     fprintf(stderr, "Error: Filename too long\n");
     free(pixels);
     return 1;
 }
-
-  return 0;
   write_ppm(new_filename, pixels, w, h);
-
   free(pixels);
   return 0;
 }

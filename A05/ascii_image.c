@@ -1,7 +1,7 @@
 /*----------------------------------------------
- * Author:
- * Date:
- * Description
+ * Author: Maryam
+ * Date: 02/22/2025
+ * Description:  takes a PPM image as a command line argument and displays it as ASCII Art.
  ---------------------------------------------*/
 #include <stdio.h>
 #include "read_ppm.h"
