@@ -125,3 +125,4 @@ int main(int argc, char *argv[])
 //https://faculty.college.emory.edu/sites/weeks/graphics/mkppm.html
 //https://www.scratchapixel.com/lessons/digital-imaging/simple-image-manipulations/reading-writing-images.html
 //https://cboard.cprogramming.com/c-programming/162082-editing-image-ppm-format.html 
+//none of these really ahd code/explanations i was looking for, but they gave me a general idea of what to expect

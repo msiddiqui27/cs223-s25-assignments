@@ -100,7 +100,7 @@ void *thread_glow(void *arg)
       }
     }
   }
-  return NULL;
+  return NULL;//made the mistake of putting this in the loop at first, completely ruined the glow.ppm image and it took so long to realize it was this one. 
 }
 
 int main(int argc, char *argv[])
