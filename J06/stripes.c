@@ -6,22 +6,39 @@
 #include <pthread.h>
 #include "write_ppm.h"
 
-struct thread_data {
+struct thread_data
+{
   int starti;
   int endi;
   int width;
   int height;
   struct ppm_pixel color;
-  struct ppm_pixel* image;
+  struct ppm_pixel *image;
 };
 
-void *start(void* userdata) {
-  struct thread_data* data = (struct thread_data*) userdata;
+void *start(void *userdata)
+{
+  struct thread_data *data = (struct thread_data *)userdata;
   // todo: your code here
+
+  for (int y = data->starti; y < data->endi; y++)
+  {
+    for (int x = 0; x < data->width; x++)
+    {
+      int idx = y * data->width + x;
+      data->image[idx] = data->color;
+    }
+  }
+
+  printf("Thread is coloring rows %d to %d with color: %d %d %d\n",
+         data->starti, data->endi - 1,
+         data->color.red, data->color.green, data->color.blue);
+
   return 0;
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv)
+{
 
   if (argc != 2)
   {
@@ -31,18 +48,35 @@ int main(int argc, char** argv) {
   int N = strtol(argv[1], NULL, 10);
 
   int size = 1024;
-  struct ppm_pixel* image = malloc(sizeof(struct ppm_pixel) * size * size);
-  struct ppm_pixel* colors = malloc(sizeof(struct ppm_pixel) * N);
-  pthread_t* threads = malloc(sizeof(pthread_t) * N);
-  struct thread_data* data = malloc(sizeof(struct thread_data) * N);
+  struct ppm_pixel *image = malloc(sizeof(struct ppm_pixel) * size * size);
+  struct ppm_pixel *colors = malloc(sizeof(struct ppm_pixel) * N);
+  pthread_t *threads = malloc(sizeof(pthread_t) * N);
+  struct thread_data *data = malloc(sizeof(struct thread_data) * N);
 
-  for (int i = 0; i < N; i++) {
+  srand(time(NULL));
+  int stripeHeight = size / N;
+
+  for (int i = 0; i < N; i++)
+
+  {
+    data[i].starti = i * stripeHeight;
+    data[i].endi = (i == N - 1) ? size : (i + 1) * stripeHeight;
+    data[i].width = size;
+    data[i].height = size;
+    data[i].image = image;
+    data[i].color.red = rand() % 256;
+    data[i].color.green = rand() % 256;
+    data[i].color.blue = rand() % 256;
     pthread_create(&threads[i], NULL, start, &data[i]);
   }
 
-  for (int i = 0; i < N; i++) {
+  for (int i = 0; i < N; i++)
+  {
     pthread_join(threads[i], NULL);
   }
 
   write_ppm("stripes.ppm", image, size, size);
+  free(image);
+  free(threads);
+  free(data);
 }
